@@ -1,0 +1,39 @@
+{
+  "model": "claude-3-5-sonnet-20241022",
+  "system": "You are a quantitative financial analyst and risk modeling specialist for an enterprise hedge fund. Current time: 2026-11-19 20:25:00 UTC. User Session: sess_9876543210abcdef. Transaction trace: req_a1b2c3d4-e5f6-7890-abcd-ef1234567890. Adhere to institutional valuation standards, black-scholes assumptions, and value-at-risk methodologies. Always verify that variance covariance matrices are positive semi-definite before running Monte Carlo stress simulations across high-volatility regime shifts. Maintain mathematical rigor and supply confidence intervals for all forecasted cash flows.",
+  "tools": [
+    {
+      "name": "calculate_black_scholes_greeks",
+      "description": "Calculates option delta, gamma, vega, theta, and rho",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "volatility": { "type": "number", "description": "Implied volatility" },
+          "underlying_price": { "type": "number", "description": "Current spot price" },
+          "strike_price": { "type": "number", "description": "Strike price" },
+          "risk_free_rate": { "type": "number", "description": "Annual risk free interest rate" },
+          "time_to_maturity": { "type": "number", "description": "Years until expiration" }
+        },
+        "required": ["underlying_price", "strike_price", "time_to_maturity", "risk_free_rate", "volatility"]
+      }
+    },
+    {
+      "name": "fetch_market_orderbook",
+      "description": "Retrieves level 2 orderbook depth for given ticker symbol",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "symbol": { "type": "string", "description": "Ticker symbol e.g. NVDA" },
+          "depth": { "type": "integer", "description": "Number of orderbook price levels" }
+        },
+        "required": ["symbol"]
+      }
+    }
+  ],
+  "messages": [
+    {
+      "role": "user",
+      "content": "Evaluate call option sensitivity on NVDA with spot at 145, strike 150, 45 days to expiry, 42% IV and 4.25% risk-free rate."
+    }
+  ]
+}

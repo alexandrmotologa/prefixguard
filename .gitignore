@@ -1,0 +1,7 @@
+prefixguard.exe
+*.db
+*.db-shm
+*.db-wal
+web/node_modules/
+node_modules/
+.DS_Store

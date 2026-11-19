@@ -1,0 +1,17 @@
+# prefixguard Enterprise Configuration Sample
+# Transparent prompt cache optimizer and FinOps reverse proxy
+
+port: 8585
+upstream_url: "https://api.anthropic.com"
+provider: "anthropic" # anthropic, openai, deepseek
+db_path: "prefixguard.db"
+
+# Prompt Cache Optimization Policies
+auto_cache_control: true     # Automatically injects ephemeral cache_control breakpoints
+auto_align_boundary: true    # Pads prompts in [874, 1023] tokens to the 1024 cache boundary
+auto_isolate_busters: true   # Extracts dynamic timestamps, session IDs, UUIDs, nonces
+auto_canonicalize: true      # Deterministically sorts tool schemas and eliminates redundant whitespace
+
+# Cache Thresholds
+min_cache_threshold: 1024    # Anthropic/OpenAI minimum token threshold
+padding_margin: 150          # Maximum certified invariant tokens allowed for padding
