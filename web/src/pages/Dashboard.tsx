@@ -8,7 +8,7 @@ import { LatencyComparison } from '../components/LatencyComparison';
 import { PromptPlayground } from '../components/PromptPlayground';
 import { RequestLogTable } from '../components/RequestLogTable';
 import { ChargebackTable } from '../components/ChargebackTable';
-import { Activity, ShieldCheck, Download, Users } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 export const Dashboard: React.FC = () => {
   const [summary, setSummary] = useState<FinOpsSummary>({
@@ -93,63 +93,73 @@ export const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8 space-y-6">
-      {/* Top Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#1e2638]">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-8">
+      {/* Top Bar Header */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-white/[0.08]">
         <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-xl font-bold text-[#f1f5f9] tracking-tight flex items-center gap-2">
-              <span className="text-[#3b82f6]">prefixguard</span>
-              <span className="text-xs px-2 py-0.5 rounded bg-[#1e2638] text-[#94a3b8] font-mono">v1.0.0</span>
-            </h1>
-            <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono bg-[#111622] border border-[#1e2638]">
-              <span className={connected ? 'pulse-indicator' : 'w-2 h-2 rounded-full bg-[#ef4444]'} />
-              <span className="text-[#94a3b8]">{connected ? 'Live Stream Active' : 'Connecting...'}</span>
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2.5">
+              <div className="p-2 rounded-xl bg-blue-600/15 border border-blue-500/30 text-blue-400">
+                <Shield size={22} className="text-blue-400" />
+              </div>
+              <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+                <span>prefixguard</span>
+                <span className="text-xs px-2.5 py-1 rounded-md bg-white/[0.06] text-slate-300 font-mono font-medium border border-white/[0.08]">
+                  v1.0.0
+                </span>
+              </h1>
+            </div>
+
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono bg-[#0d1322] border border-white/[0.08] shadow-sm">
+              <span className={connected ? 'pulse-indicator' : 'w-2 h-2 rounded-full bg-red-500'} />
+              <span className={connected ? 'text-emerald-400 font-medium' : 'text-slate-400'}>
+                {connected ? 'Live Stream Active' : 'Connecting...'}
+              </span>
             </div>
           </div>
-          <p className="text-xs text-[#64748b] mt-1">
+          <p className="text-xs sm:text-sm text-slate-400 mt-2 max-w-2xl font-normal leading-relaxed">
             Zero-Invalidation Prompt Cache Optimizer, Token-Boundary Compiler & FinOps Reverse Proxy
           </p>
         </div>
 
         {/* Tab Controls */}
-        <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-lg bg-[#0d121d] border border-[#1e2638]">
+        <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-xl bg-[#0b0f19] border border-white/[0.08] shadow-inner">
           <button
             onClick={() => setActiveTab('cockpit')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition ${
+            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap active:scale-[0.98] transition-all duration-150 ${
               activeTab === 'cockpit'
-                ? 'bg-[#3b82f6] text-white shadow-sm'
-                : 'text-[#94a3b8] hover:text-[#f1f5f9]'
+                ? 'bg-blue-600 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.25),0_2px_10px_rgba(59,130,246,0.35)] border border-blue-400/40'
+                : 'text-slate-400 hover:text-white hover:bg-white/[0.05] border border-transparent'
             }`}
           >
             FinOps Cockpit
           </button>
           <button
             onClick={() => setActiveTab('chargeback')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition ${
+            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap active:scale-[0.98] transition-all duration-150 ${
               activeTab === 'chargeback'
-                ? 'bg-[#3b82f6] text-white shadow-sm'
-                : 'text-[#94a3b8] hover:text-[#f1f5f9]'
+                ? 'bg-blue-600 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.25),0_2px_10px_rgba(59,130,246,0.35)] border border-blue-400/40'
+                : 'text-slate-400 hover:text-white hover:bg-white/[0.05] border border-transparent'
             }`}
           >
             Cost Chargeback
           </button>
           <button
             onClick={() => setActiveTab('playground')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition ${
+            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap active:scale-[0.98] transition-all duration-150 ${
               activeTab === 'playground'
-                ? 'bg-[#3b82f6] text-white shadow-sm'
-                : 'text-[#94a3b8] hover:text-[#f1f5f9]'
+                ? 'bg-blue-600 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.25),0_2px_10px_rgba(59,130,246,0.35)] border border-blue-400/40'
+                : 'text-slate-400 hover:text-white hover:bg-white/[0.05] border border-transparent'
             }`}
           >
             Prompt Playground
           </button>
           <button
             onClick={() => setActiveTab('requests')}
-            className={`px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition ${
+            className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap active:scale-[0.98] transition-all duration-150 ${
               activeTab === 'requests'
-                ? 'bg-[#3b82f6] text-white shadow-sm'
-                : 'text-[#94a3b8] hover:text-[#f1f5f9]'
+                ? 'bg-blue-600 text-white font-semibold shadow-[inset_0_1px_0_0_rgba(255,255,255,0.25),0_2px_10px_rgba(59,130,246,0.35)] border border-blue-400/40'
+                : 'text-slate-400 hover:text-white hover:bg-white/[0.05] border border-transparent'
             }`}
           >
             Live Requests ({requests.length})
@@ -158,9 +168,9 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {activeTab === 'cockpit' && (
-        <>
+        <div className="space-y-8">
           {/* Top 3 Cards Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             <CacheHitGauge
               hitRate={summary.overall_hit_rate}
               cacheReadTokens={summary.cache_read_tokens}
@@ -184,7 +194,7 @@ export const Dashboard: React.FC = () => {
           </div>
 
           {/* Middle Row: Latency Comparison and Buster Log */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             <LatencyComparison
               avgTTFTMs={summary.avg_ttft_ms}
               avgLatencyMs={summary.avg_latency_ms}
@@ -203,14 +213,26 @@ export const Dashboard: React.FC = () => {
 
           {/* Recent Interceptions */}
           <RequestLogTable requests={requests} />
-        </>
+        </div>
       )}
 
-      {activeTab === 'chargeback' && <ChargebackTable chargebacks={chargebacks} />}
+      {activeTab === 'chargeback' && (
+        <div className="pt-2">
+          <ChargebackTable chargebacks={chargebacks} />
+        </div>
+      )}
 
-      {activeTab === 'playground' && <PromptPlayground />}
+      {activeTab === 'playground' && (
+        <div className="pt-2">
+          <PromptPlayground />
+        </div>
+      )}
 
-      {activeTab === 'requests' && <RequestLogTable requests={requests} />}
+      {activeTab === 'requests' && (
+        <div className="pt-2">
+          <RequestLogTable requests={requests} />
+        </div>
+      )}
     </div>
   );
 };

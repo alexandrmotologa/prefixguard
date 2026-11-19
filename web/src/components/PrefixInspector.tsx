@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers, CheckCircle2, AlertTriangle, Shield, Cpu } from 'lucide-react';
+import { Layers, AlertTriangle, Shield, Cpu } from 'lucide-react';
 
 interface PrefixInspectorProps {
   staticTokens: number;
@@ -24,94 +24,96 @@ export const PrefixInspector: React.FC<PrefixInspectorProps> = ({
   const dynamicPct = Math.max(0, 100 - staticPct - paddingPct);
 
   return (
-    <div className="glass-panel p-6 flex flex-col justify-between" style={{ minHeight: '320px' }}>
+    <div className="glass-panel p-6 sm:p-7 flex flex-col justify-between" style={{ minHeight: '340px' }}>
       <div>
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg" style={{ background: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4' }}>
-              <Layers size={18} />
+        {/* Header */}
+        <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/[0.06]">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+              <Layers size={20} />
             </div>
             <div>
-              <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#f1f5f9' }}>Prompt Topology Inspector</h3>
-              <p style={{ fontSize: '12px', color: '#64748b' }}>Deterministic Prefix Segmentation</p>
+              <h3 className="text-base font-semibold text-white tracking-tight">Prompt Topology Inspector</h3>
+              <p className="text-xs text-slate-400 mt-0.5">Deterministic Prefix Segmentation</p>
             </div>
           </div>
-          <span className="font-mono text-xs px-2.5 py-1 rounded bg-[#0d121d] text-[#06b6d4] border border-[#1e2638]">
+          <span className="font-mono text-xs px-3 py-1.5 rounded-lg bg-[#090d17] text-cyan-400 border border-white/[0.08] shadow-sm font-medium">
             Hash: {prefixHash ? prefixHash.slice(0, 10) : 'c03a7eb...'}
           </span>
         </div>
 
         {/* Segmented Token Bar */}
-        <div className="mb-4">
-          <div className="flex justify-between text-xs text-[#94a3b8] mb-1.5 font-mono">
+        <div className="my-4">
+          <div className="flex justify-between text-xs text-slate-300 mb-2 font-mono font-medium">
             <span>Static Invariant Prefix ({staticTokens}t)</span>
             <span>Dynamic Suffix ({dynamicTokens}t)</span>
           </div>
-          <div className="h-3 w-full bg-[#0d121d] rounded-full overflow-hidden flex border border-[#1e2638]">
+          <div className="h-4 w-full bg-[#090d17] rounded-full overflow-hidden flex border border-white/[0.08] shadow-inner p-0.5">
             <div
               style={{ width: `${staticPct}%` }}
-              className="bg-[#10b981] h-full transition-all duration-500"
+              className="bg-emerald-500 h-full rounded-full transition-all duration-500 shadow-sm"
               title={`Static Invariant Prefix: ${staticTokens} tokens (${staticPct}%)`}
             />
             {paddingTokens > 0 && (
               <div
                 style={{ width: `${paddingPct}%` }}
-                className="bg-[#3b82f6] h-full transition-all duration-500"
+                className="bg-blue-500 h-full rounded-full transition-all duration-500 shadow-sm"
                 title={`Smart Boundary Padding: ${paddingTokens} tokens (${paddingPct}%)`}
               />
             )}
             <div
               style={{ width: `${dynamicPct}%` }}
-              className="bg-[#f59e0b] h-full transition-all duration-500"
+              className="bg-amber-500 h-full rounded-full transition-all duration-500 shadow-sm"
               title={`Dynamic Volatile Suffix: ${dynamicTokens} tokens (${dynamicPct}%)`}
             />
           </div>
-          <div className="flex items-center gap-4 text-[11px] text-[#94a3b8] mt-2">
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-sm bg-[#10b981]" />
+          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 mt-3 font-medium">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/40" />
               <span>Immutable Prefix ({staticPct}%)</span>
             </div>
             {paddingTokens > 0 && (
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-sm bg-[#3b82f6]" />
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/40" />
                 <span>Threshold Padding</span>
               </div>
             )}
-            <div className="flex items-center gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-sm bg-[#f59e0b]" />
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-sm shadow-amber-500/40" />
               <span>Trailing Volatiles ({dynamicPct}%)</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-2.5 pt-3 border-t" style={{ borderColor: 'var(--border-card)' }}>
-        <div className="bg-[#0d121d] p-2.5 rounded-lg">
-          <div className="flex items-center gap-1 text-[11px] text-[#94a3b8] mb-0.5">
-            <Shield size={12} className="text-[#10b981]" />
-            <span>Boundary</span>
+      {/* Bottom 3 Verified Attribute Badges */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/[0.06]">
+        <div className="bg-[#090d17] p-3 sm:p-3.5 rounded-xl border border-white/[0.06] shadow-sm">
+          <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
+            <Shield size={13} className="text-emerald-400 flex-shrink-0" />
+            <span className="font-medium">Boundary</span>
           </div>
-          <div className="font-mono text-xs font-semibold text-[#f1f5f9]">
+          <div className="font-mono text-xs font-bold text-slate-200">
             {staticTokens >= 1024 ? '1,024+ Certified' : 'Auto-Aligned'}
           </div>
         </div>
 
-        <div className="bg-[#0d121d] p-2.5 rounded-lg">
-          <div className="flex items-center gap-1 text-[11px] text-[#94a3b8] mb-0.5">
-            <Cpu size={12} className="text-[#06b6d4]" />
-            <span>Tools Sorted</span>
+        <div className="bg-[#090d17] p-3 sm:p-3.5 rounded-xl border border-white/[0.06] shadow-sm">
+          <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
+            <Cpu size={13} className="text-cyan-400 flex-shrink-0" />
+            <span className="font-medium">Tools Sorted</span>
           </div>
-          <div className="font-mono text-xs font-semibold text-[#f1f5f9]">
+          <div className="font-mono text-xs font-bold text-slate-200">
             {toolsCount > 0 ? `${toolsCount} Deterministic` : 'Canonical'}
           </div>
         </div>
 
-        <div className="bg-[#0d121d] p-2.5 rounded-lg">
-          <div className="flex items-center gap-1 text-[11px] text-[#94a3b8] mb-0.5">
-            <AlertTriangle size={12} className="text-[#f59e0b]" />
-            <span>Busters Fixed</span>
+        <div className="bg-[#090d17] p-3 sm:p-3.5 rounded-xl border border-white/[0.06] shadow-sm">
+          <div className="flex items-center gap-1.5 text-xs text-slate-400 mb-1">
+            <AlertTriangle size={13} className="text-amber-400 flex-shrink-0" />
+            <span className="font-medium">Busters Fixed</span>
           </div>
-          <div className="font-mono text-xs font-semibold text-[#f59e0b]">
+          <div className="font-mono text-xs font-bold text-amber-400">
             {bustersCount} Relocated
           </div>
         </div>

@@ -16,60 +16,59 @@ export const DollarSavingsCard: React.FC<DollarSavingsCardProps> = ({
   savingsPercentage,
   totalRequests,
 }) => {
-  // 30-day projected savings based on current traffic
-  const projectedMonthlyUSD = totalRequests > 0 ? (totalSavedUSD / Math.max(1, totalRequests)) * (totalRequests * 30) : 0;
-
   return (
-    <div className="glass-panel-glow p-6 flex flex-col justify-between relative overflow-hidden" style={{ minHeight: '320px' }}>
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>
-            <DollarSign size={18} />
+    <div className="glass-panel-glow p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden" style={{ minHeight: '340px' }}>
+      {/* Header */}
+      <div className="flex items-center justify-between pb-4 border-b border-white/[0.06]">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-400">
+            <DollarSign size={20} />
           </div>
           <div>
-            <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#f1f5f9' }}>Cumulative FinOps Savings</h3>
-            <p style={{ fontSize: '12px', color: '#64748b' }}>Direct LLM Invoice Reductions</p>
+            <h3 className="text-base font-semibold text-white tracking-tight">Cumulative FinOps Savings</h3>
+            <p className="text-xs text-slate-400 mt-0.5">Direct LLM Invoice Reductions</p>
           </div>
         </div>
-        <div className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono font-medium whitespace-nowrap"
-             style={{ background: 'rgba(16, 185, 129, 0.12)', color: '#10b981' }}>
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-semibold whitespace-nowrap bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shadow-sm">
           <TrendingDown size={14} />
-          <span className="whitespace-nowrap">-{savingsPercentage.toFixed(1)}% Cost</span>
+          <span>-{savingsPercentage.toFixed(1)}% Cost</span>
         </div>
       </div>
 
-      <div className="my-2">
-        <div className="text-xs uppercase font-semibold tracking-wider text-[#94a3b8] mb-1">
+      {/* Main Net Savings Metric */}
+      <div className="my-5">
+        <div className="text-xs uppercase font-semibold tracking-wider text-slate-400 mb-1.5">
           Net Verified Savings
         </div>
-        <div className="flex items-baseline gap-2">
-          <span className="font-mono text-4xl font-extrabold text-[#10b981] tracking-tight">
+        <div className="flex items-baseline gap-2.5">
+          <span className="font-mono text-4xl sm:text-5xl font-extrabold text-emerald-400 tracking-tight tabular-nums">
             ${totalSavedUSD.toFixed(4)}
           </span>
-          <span className="text-xs text-[#64748b] font-mono">USD</span>
+          <span className="text-xs text-slate-500 font-mono font-medium">USD</span>
         </div>
-        <div className="flex items-center gap-1.5 mt-2 text-xs text-[#94a3b8]">
-          <ShieldCheck size={14} className="text-[#3b82f6]" />
+        <div className="flex items-center gap-2 mt-3 text-xs text-slate-400">
+          <ShieldCheck size={15} className="text-blue-400 flex-shrink-0" />
           <span>Saved across {totalRequests.toLocaleString()} intercepted inference calls</span>
         </div>
       </div>
 
-      <div className="w-full grid grid-cols-2 gap-3 pt-3 border-t" style={{ borderColor: 'var(--border-card)' }}>
-        <div className="bg-[#0d121d] p-2.5 rounded-lg">
-          <div className="text-xs text-[#64748b]">Unoptimized Invoice</div>
-          <div className="font-mono text-sm font-semibold text-[#ef4444] mt-0.5 line-through decoration-red-500/60">
+      {/* Bottom Breakdown Tiles */}
+      <div className="w-full grid grid-cols-2 gap-3.5 pt-4 border-t border-white/[0.06]">
+        <div className="bg-[#090d17] p-3.5 sm:p-4 rounded-xl border border-white/[0.06] shadow-sm">
+          <div className="text-xs font-medium text-slate-400">Unoptimized Invoice</div>
+          <div className="font-mono text-sm sm:text-base font-bold text-red-400 mt-1 line-through decoration-red-500/70 tabular-nums">
             ${totalRawCostUSD.toFixed(4)}
           </div>
-          <div className="text-[10px] text-[#64748b] mt-0.5">Without caching</div>
+          <div className="text-[11px] text-slate-500 mt-1">Without caching</div>
         </div>
-        <div className="bg-[#0d121d] p-2.5 rounded-lg">
-          <div className="text-xs text-[#64748b]">Actual Billed Cost</div>
-          <div className="font-mono text-sm font-semibold text-[#10b981] mt-0.5">
+        <div className="bg-[#090d17] p-3.5 sm:p-4 rounded-xl border border-white/[0.06] shadow-sm">
+          <div className="text-xs font-medium text-slate-400">Actual Billed Cost</div>
+          <div className="font-mono text-sm sm:text-base font-bold text-emerald-400 mt-1 tabular-nums">
             ${totalActualCostUSD.toFixed(4)}
           </div>
-          <div className="text-[10px] text-[#10b981] mt-0.5 flex items-center gap-0.5">
-            <ArrowUpRight size={10} />
-            {savingsPercentage.toFixed(0)}% ROI margin
+          <div className="text-[11px] text-emerald-400 mt-1 flex items-center gap-1 font-medium">
+            <ArrowUpRight size={12} />
+            <span>{savingsPercentage.toFixed(0)}% ROI margin</span>
           </div>
         </div>
       </div>

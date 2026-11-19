@@ -11,60 +11,73 @@ export const CacheBusterLog: React.FC<CacheBusterLogProps> = ({ stats, totalRepa
   const getIcon = (type: string) => {
     switch (type.toLowerCase()) {
       case 'timestamp':
-        return <Clock size={14} className="text-[#3b82f6]" />;
+        return <Clock size={16} className="text-blue-400" />;
       case 'session_id':
-        return <Hash size={14} className="text-[#f59e0b]" />;
+        return <Hash size={16} className="text-amber-400" />;
       case 'uuid':
-        return <Fingerprint size={14} className="text-[#8b5cf6]" />;
+        return <Fingerprint size={16} className="text-purple-400" />;
       default:
-        return <AlertCircle size={14} className="text-[#06b6d4]" />;
+        return <AlertCircle size={16} className="text-cyan-400" />;
     }
   };
 
   return (
-    <div className="glass-panel p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>
-            <ShieldAlert size={18} />
+    <div className="glass-panel p-6 sm:p-7 flex flex-col justify-between" style={{ minHeight: '340px' }}>
+      {/* Header */}
+      <div className="flex items-center justify-between pb-4 border-b border-white/[0.06]">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400">
+            <ShieldAlert size={20} />
           </div>
           <div>
-            <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#f1f5f9' }}>Cache Buster Neutralization Log</h3>
-            <p style={{ fontSize: '12px', color: '#64748b' }}>Dynamic Volatile Variables Extracted & Relocated</p>
+            <h3 className="text-base font-semibold text-white tracking-tight">Cache Buster Neutralization Log</h3>
+            <p className="text-xs text-slate-400 mt-0.5">Dynamic Volatile Variables Extracted & Relocated</p>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-[#0d121d] text-[#10b981] border border-[#1e2638]">
-          <Check size={12} />
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-sm whitespace-nowrap">
+          <Check size={14} />
           <span>{totalRepaired} Invariants Preserved</span>
         </div>
       </div>
 
-      {stats.length === 0 ? (
-        <div className="bg-[#0d121d] p-6 rounded-lg text-center text-sm text-[#64748b]">
-          No volatile variables intercepted yet. As prompt traffic passes through the proxy, dynamic preambles will be listed here.
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {stats.map((stat, idx) => (
-            <div key={idx} className="bg-[#0d121d] p-3.5 rounded-lg border border-[#1e2638] flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="p-2 rounded bg-[#111622]">
-                  {getIcon(stat.buster_type)}
-                </div>
-                <div>
-                  <div className="text-xs font-semibold text-[#f1f5f9] capitalize">
-                    {stat.buster_type.replace('_', ' ')}
+      {/* Buster Cards Grid */}
+      <div className="my-auto py-4">
+        {stats.length === 0 ? (
+          <div className="bg-[#090d17] p-8 rounded-xl border border-white/[0.06] text-center text-xs sm:text-sm text-slate-400 shadow-sm">
+            No volatile variables intercepted yet. As prompt traffic passes through the proxy, dynamic preambles will be listed here.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+            {stats.map((stat, idx) => (
+              <div
+                key={idx}
+                className="bg-[#090d17] p-4 rounded-xl border border-white/[0.06] hover:border-amber-500/30 transition-all duration-200 flex items-center justify-between shadow-sm"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-white/[0.04] border border-white/[0.06]">
+                    {getIcon(stat.buster_type)}
                   </div>
-                  <div className="text-[11px] text-[#64748b]">Auto-relocated to suffix</div>
+                  <div>
+                    <div className="text-xs font-semibold text-slate-100 capitalize">
+                      {stat.buster_type.replace('_', ' ')}
+                    </div>
+                    <div className="text-[11px] text-slate-400 mt-0.5">Auto-relocated to suffix</div>
+                  </div>
                 </div>
+                <span className="font-mono text-xs sm:text-sm font-bold text-amber-400 px-2.5 py-1 rounded-lg bg-amber-400/10 border border-amber-400/20 tabular-nums">
+                  {stat.count}
+                </span>
               </div>
-              <span className="font-mono text-sm font-bold text-[#f59e0b] px-2 py-0.5 rounded bg-[#161c2c]">
-                {stat.count}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Subtle Bottom Footer Note */}
+      <div className="pt-3 border-t border-white/[0.06] text-[11px] text-slate-500 flex items-center justify-between">
+        <span>Deterministic boundary regex compiled at startup</span>
+        <span className="font-mono">Zero-TTL Leakage</span>
+      </div>
     </div>
   );
 };

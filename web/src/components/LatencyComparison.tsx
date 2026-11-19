@@ -13,62 +13,67 @@ export const LatencyComparison: React.FC<LatencyComparisonProps> = ({ avgTTFTMs,
   const reductionPct = Math.round(((baselineTTFT - currentTTFT) / baselineTTFT) * 100);
 
   return (
-    <div className="glass-panel p-6">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>
-            <Gauge size={18} />
+    <div className="glass-panel p-6 sm:p-7 flex flex-col justify-between" style={{ minHeight: '340px' }}>
+      {/* Header */}
+      <div className="flex items-center justify-between pb-4 border-b border-white/[0.06]">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400">
+            <Gauge size={20} />
           </div>
           <div>
-            <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#f1f5f9' }}>Time To First Token (TTFT) Waterfall</h3>
-            <p style={{ fontSize: '12px', color: '#64748b' }}>Inference Acceleration via KV-Cache Hit</p>
+            <h3 className="text-base font-semibold text-white tracking-tight">Time To First Token (TTFT) Waterfall</h3>
+            <p className="text-xs text-slate-400 mt-0.5">Inference Acceleration via KV-Cache Hit</p>
           </div>
         </div>
-        <div className="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono font-medium"
-             style={{ background: 'rgba(16, 185, 129, 0.12)', color: '#10b981' }}>
+        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-semibold whitespace-nowrap bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shadow-sm">
           <ArrowDown size={14} />
           <span>-{reductionPct}% TTFT Latency</span>
         </div>
       </div>
 
-      <div className="space-y-4">
+      {/* Latency Waterfall Bars */}
+      <div className="space-y-5 my-5">
         {/* Baseline Bar */}
         <div>
-          <div className="flex justify-between text-xs font-mono text-[#94a3b8] mb-1">
-            <span className="flex items-center gap-1.5">
-              <Clock size={12} className="text-[#ef4444]" />
+          <div className="flex justify-between text-xs font-mono text-slate-300 mb-2 font-medium">
+            <span className="flex items-center gap-2">
+              <Clock size={14} className="text-red-400" />
               <span>Uncached Prefill (Accidental Cache Bust)</span>
             </span>
-            <span className="text-[#ef4444] font-semibold">~2,800 ms</span>
+            <span className="text-red-400 font-bold tabular-nums">~2,800 ms</span>
           </div>
-          <div className="h-3 w-full bg-[#0d121d] rounded-full overflow-hidden border border-[#1e2638]">
-            <div className="bg-[#ef4444] h-full rounded-full" style={{ width: '92%' }} />
+          <div className="h-3.5 w-full bg-[#090d17] rounded-full overflow-hidden border border-white/[0.08] shadow-inner p-0.5">
+            <div className="bg-red-500 h-full rounded-full shadow-sm" style={{ width: '92%' }} />
           </div>
         </div>
 
         {/* Cached Bar */}
         <div>
-          <div className="flex justify-between text-xs font-mono text-[#94a3b8] mb-1">
-            <span className="flex items-center gap-1.5">
-              <Zap size={12} className="text-[#10b981]" />
+          <div className="flex justify-between text-xs font-mono text-slate-300 mb-2 font-medium">
+            <span className="flex items-center gap-2">
+              <Zap size={14} className="text-emerald-400" />
               <span>prefixguard Optimized (KV-Cache Reuse)</span>
             </span>
-            <span className="text-[#10b981] font-semibold">{currentTTFT} ms</span>
+            <span className="text-emerald-400 font-bold tabular-nums">{currentTTFT} ms</span>
           </div>
-          <div className="h-3 w-full bg-[#0d121d] rounded-full overflow-hidden border border-[#1e2638]">
-            <div className="bg-[#10b981] h-full rounded-full transition-all duration-700" style={{ width: `${Math.min(100, Math.max(12, (currentTTFT / baselineTTFT) * 100))}%` }} />
+          <div className="h-3.5 w-full bg-[#090d17] rounded-full overflow-hidden border border-white/[0.08] shadow-inner p-0.5">
+            <div
+              className="bg-emerald-500 h-full rounded-full transition-all duration-700 shadow-sm shadow-emerald-500/30"
+              style={{ width: `${Math.min(100, Math.max(12, (currentTTFT / baselineTTFT) * 100))}%` }}
+            />
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-[#1e2638]">
-        <div className="bg-[#0d121d] p-2.5 rounded-lg text-center">
-          <div className="text-[11px] text-[#64748b]">Measured TTFT</div>
-          <div className="font-mono text-sm font-semibold text-[#10b981] mt-0.5">{currentTTFT} ms</div>
+      {/* Bottom Measured Latency Tiles */}
+      <div className="grid grid-cols-2 gap-3.5 pt-4 border-t border-white/[0.06]">
+        <div className="bg-[#090d17] p-3.5 sm:p-4 rounded-xl border border-white/[0.06] text-center shadow-sm">
+          <div className="text-xs font-medium text-slate-400">Measured TTFT</div>
+          <div className="font-mono text-base font-bold text-emerald-400 mt-1 tabular-nums">{currentTTFT} ms</div>
         </div>
-        <div className="bg-[#0d121d] p-2.5 rounded-lg text-center">
-          <div className="text-[11px] text-[#64748b]">Total Request Latency</div>
-          <div className="font-mono text-sm font-semibold text-[#f1f5f9] mt-0.5">
+        <div className="bg-[#090d17] p-3.5 sm:p-4 rounded-xl border border-white/[0.06] text-center shadow-sm">
+          <div className="text-xs font-medium text-slate-400">Total Request Latency</div>
+          <div className="font-mono text-base font-bold text-slate-100 mt-1 tabular-nums">
             {avgLatencyMs > 0 ? `${Math.round(avgLatencyMs)} ms` : 'Streaming'}
           </div>
         </div>
